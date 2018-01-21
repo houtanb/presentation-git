@@ -1,0 +1,203 @@
+\documentclass{article}
+\usepackage[a4paper, total={6.5in, 10.5in}]{geometry}
+\usepackage[urlcolor=blue,colorlinks=true]{hyperref}
+\usepackage{wasysym}
+\begin{document}
+
+\title{Git Handout\thanks{This handout available at \url{http://www.dynare.org/houtan/handouts}}}
+\author{Houtan Bastani\thanks{Dynare Team, CEPREMAP} \thanks{\href{mailto:houtan@dynare.org}{houtan@dynare.org}}}
+
+\maketitle
+
+Topics addressed in this handout are for the general \texttt{git} user. We'll go over what \texttt{git} is, setting up your environment, accessing a repository from a server and the usual workflow that you'll follow. I hope to address the most common \texttt{git} commands. After going through this handout, you should be able to handle most of your interactions with \texttt{git}. At the beginning it'll be annoying and you'll feel like \texttt{git} is slowing you down. But, with time, as you become more comfortable with the idea of \texttt{git} and the commands listed below, you'll become more accustomed to the way \texttt{git} works and be able to learn more on your own.
+
+\subsection{How To Approach Learning Git}
+
+When you begin learning \texttt{git}, things can feel a bit overwhelming. You can feel as though you're swimming in a soup of \texttt{git} \texttt{add}s, \texttt{commit}s, \texttt{fetch}es, \texttt{pull}s, and on and on. To avoid this ``git command soup'' (and the resultant frustration) make sure you understand the big picture before you focus on the details (i.e., \texttt{git} commands); try to understand why you're using \texttt{git}, the general \texttt{git} workflow, and the appropriate action to take in a given situation (which can be project dependent). After you understand what it is you're trying to accomplish and how \texttt{git} works, the commands will become much clearer and easier to pick up. And, once you have understood the commands, it will be easier to choose the GUI that best serves your needs. \smiley
+
+\section{What is Git?}
+
+Git is a distributed version control system, developed by Linus Torvalds of Linux kernel fame. But what does that mean?
+\begin{itemize}
+  \item \textbf{Version Control System}: Something that keeps track of the changes made to files (\texttt{commit}s)
+  \item \textbf{Distributed}: Everyone has a copy (\texttt{clone}) of the git repository on their computer
+\end{itemize}
+
+\noindent So, a Distributed Version Control System allows you to have a copy of the complete development history of the project on your local workstation. In other words, all changes ever made in the history of the project are on your computer! This means that at any moment you can go back to the state of the project as it existed at any other point in time (\texttt{reset}).\\
+\\
+\noindent Because of the distributed nature of git, you can develop locally (without need for an internet connection) and, when ready, send (\texttt{push}) them to the main git repository (\texttt{origin}) to share them with your team
+
+\section{Setup}
+Before we get tackle the main git workflow, there is a bit of housekeeping you'll need to do.
+
+\subsection{Once per computer}
+When setting up git on your computer for the first time, you need to tell git who you are. This will allow \texttt{commit}s you make to be associated with you.
+
+Setup is rather simple. At the command prompt, configure your global git information by issuing the following two commands:
+\begin{verbatim}
+> git config --global user.name "Your Name"
+> git config --global user.email you@something.something
+\end{verbatim}
+That's it! \smiley
+
+\subsection{Once per project}
+When working on a project with others, you'll need to \texttt{clone} the global git repository. This command will copy the git repository from the server to your workstation. The repository is completely self-contained and can be copied from one directory to another and from one computer to another. As mentioned above, it contains the entire development history of the project. To get a copy of the global git repository onto your computer, do the following:
+\begin{verbatim}
+> git clone <<repository.git>>
+\end{verbatim}
+There are several different protocals that you can use to connect to a git repository (e.g., \texttt{http}, \texttt{git}, \texttt{https}, \texttt{ssh}). For example, to clone the Dynare repository, you could do:
+\begin{verbatim}
+> git clone https://github.com/DynareTeam/dynare.git
+> git clone git@github.com:DynareTeam/dynare.git
+\end{verbatim}
+where \texttt{https} is open to everyone and \texttt{ssh} is available to those who have uploaded their public key to their \texttt{github.com} account.\\
+\\
+Of course, if you're working directly on the sevrer where the git repository lies, you can simply do:
+\begin{verbatim}
+> git clone /srv/git/repoName.git
+\end{verbatim}
+where \texttt{/srv/git/repoName.git} is the full filename of the git repository.\\
+\\
+\noindent If the repository makes use of \texttt{submodule}s\footnote{These are just other repositories that your repository depends on, more on this in Section \ref{submodule}}, instead of running
+\begin{verbatim}
+> git clone git@github.com:DynareTeam/dynare.git
+> cd dynare && git submodule update --init --recursive
+\end{verbatim}
+you can save yourself a step by simply running
+\begin{verbatim}
+> git clone --recurse-submodules git@github.com:DynareTeam/dynare.git
+\end{verbatim}
+
+\section{Basic Workflow}
+Ok, you've done it! Now you have a copy of the git repository on your computer. Now what? Well, if you're a developer, you may want to actually edit files in the repository and then share the changes you've made with the rest of the team. As these actions will comprise the majority of your interactions with git, let's start with them.
+
+\subsection{Updating your repository}
+
+Now, before you begin editing a file, it's good practice to update your local copy of the repository. This allows you to always work with the latest version of the code and helps you integrate your changes with those already \texttt{push}ed to the main repository. In this way, when you're finally ready to share the changes you've been making, you won't have to worry about \texttt{merge} conflicts.
+
+\subsubsection{Branches}
+
+Before we can talk about updating your local repository, we should talk about the concept of \texttt{branch}es within git. Remember, your local repository is a copy of the global repository. So, it is useful to know BOTH where the current state of the global repository is and where the current state of your local repository is. When you first clone the repository, you'll have:\footnote{This is assuming a recently initalized repository. An older project may have other branches.}
+\begin{itemize}
+  \item \texttt{origin/HEAD}: tells you the branch that's checked out by default when you clone the repository (usually it points to \texttt{origin/master})
+  \item \texttt{origin/master}: indicates the main development branch of the repository
+  \item \texttt{master}: is your local pointer that tracks \texttt{origin/master}. When you make changes, this pointer will advance past \texttt{origin/master}. Once your changes have been pushed to the global repository, \texttt{origin/master} will come into line with your local master branch
+\end{itemize}
+Note here that branch names take the form \texttt{<<remote name>>/<<branch name>>}. Here, our \texttt{remote}\footnote{A \texttt{remote} in git is just a repository. By default/convention the first repository you clone from is called \texttt{origin}. Implicit in that statement is that you can track multiple repositories. In my Dynare development for example, I track the main Dynare repository (\texttt{origin}), \texttt{https://github.com/DynareTeam/dynare.git} and I also track a personal remote that I call \texttt{houtanb}, \texttt{https://github.com/houtanb/dynare.git}. I \texttt{push} changes to \texttt{houtanb} that I want to test on a server. Once I have tested those changes and am satisfied they are correct, I \texttt{push} them to \texttt{origin} so that the other Dynare Team members can see them.} name is \texttt{origin}.\footnote{Also, note that in git parlance, \texttt{origin} is just the name of a \texttt{remote} and hence that name can be changed to whatever you want.}\\
+\\
+The command:
+\begin{verbatim}
+> git branch
+\end{verbatim}
+tells you which branch you're currently on. One great benefit of git is that you can have several branches, both locally and on the server. This is useful for software releases (e.g., at Dynare, in addition to the \texttt{master} branch, we have a branch for every major release), for working on a side project that will eventually be \texttt{merge}ed back into \texttt{master}, as well as just for testing ideas out locally.
+
+\subsubsection{Updating Procedure}
+Now that you understand a bit more about branches in git, we're ready to look at the repository updating procedure that you'll use on a regular basis. Basically, before you start working, you should do the following:
+\begin{verbatim}
+> git branch
+\end{verbatim}
+to ensure you're on the branch you want to be on (for our purposes, we want to be on \texttt{master}). If you're not on \texttt{master}, simply run
+\begin{verbatim}
+> git checkout master
+\end{verbatim}
+to move back to the \texttt{master} branch. Next, to update from the \texttt{remote} repository (in our case, it's called \texttt{origin}, simply do:
+\begin{verbatim}
+> git fetch
+> git rebase origin/master
+\end{verbatim}
+So, what do these commands do? Well,
+\begin{itemize}
+  \item \texttt{git fetch} brings in any changes from the global git repository, updating pointers to the global branches (i.e., \texttt{origin/master} and \texttt{origin/HEAD})
+  \item \texttt{git rebase origin/master} takes your local master branch pointer and places all local commits (those that have not yet been pushed to the global git repo) above the pointers to the pointers to the global branches (i.e., origin/master and origin/HEAD). In other words it “changes the base” of the current branch (i.e., master) to be on to of the origin/master branch.
+\end{itemize}
+With this procedure, every developer is responsible for ensuring that their commits fit on top of the development history. This creates a clean tree (a straight line) without unneccessary merge commits. It also forces the developer to resolve conflicts him/herself and does not rely on the handwaving that can be implicit in a \texttt{merge}. Doing this on a regular basis (before you start working for the day, or even as often as every email that notifies you that the repository has been updated) can save you a lot of pain and help you avoid conflicts.
+
+NB: NEVER USE \texttt{git pull}; it's a high-level command (combining \texttt{fetch} and \texttt{merge}) that does some fancy stuff. Though it'll usually work, when it doesn't it becomes unneccessarily confusing / problematic / annoying / frustrating to fix it because it takes time and git know-how to find out what the problem is. It also poses a problem when git novices use it by creating unneccessary \texttt{merge} commits, making the git \texttt{tree} itself confusing, making it more difficult to use git \texttt{bisect}, and making \texttt{gitk} and other git GUIs more difficult to use as well. Avoid all updating problems by simply following the procedure outlined above.
+
+\subsection{Committing}
+After having made some changes, you are ready to create a commit. A commit is a logical change; it can be as short as one character or as long as you want. The point is that if it were ever to be undone (\texttt{revert}ed) only that logical change should be undone. If there are more than one type of change within a commit, reverting it would undo things that you may want to keep in the repository. What's more, it helps everyone working on the project better understand exactly what was changed without being obliged to look at the code.
+\begin{verbatim}
+> git add <<file to be committed>>
+> git commit -m "<<descriptive message>>"
+\end{verbatim}
+\begin{itemize}
+  \item \texttt{git add} adds an edited file to the staging area, preparing it to be commited. NB: if you modify the file after running \texttt{git add}, you will need to add it again in order for those changes to be included in the commit
+  \item \texttt{git commit} creates the logical commit on your current branch (\texttt{master} for us), moving it forward by one node, leaving \texttt{origin/master} behind. Your local repository is now ahead of the global repository. NB: A commit is denoted by a unique Secure Hash Algorithm (SHA).
+\end{itemize}
+After a commit, if you realize that you have forgotten to include a file that logically belongs there, don’t worry! Just,
+\begin{verbatim}
+> git add <file to be committed>
+> git commit --amend
+\end{verbatim}
+to include it in the commit.
+
+\subsubsection{Three Types of Files In Git}
+\begin{itemize}
+  \item \textbf{Staged File}: Any file that you have run \texttt{git add} on. These files will be committed when you next run \texttt{git commit}
+  \item \textbf{Unstaged File}: Any tracked file that has been modified but not yet \texttt{add}ed to the staging area
+  \item \textbf{Untracked File}: Any file in the repository that is not explicitly ignored by a \texttt{.gitignore} file and has not previously been \texttt{commit}ted and is not currently in the staging area
+\end{itemize}
+Running
+\begin{verbatim}
+> git status
+\end{verbatim}
+will tell you which files are Staged, Unstaged, and Untracked.
+
+\subsubsection{.gitignore}
+This is a file that tells git which untracked files to ignore. Entries might include \texttt{*.o}, \texttt{*\~}, or \texttt{*.aux}, etc.
+
+\subsubsection{Related Commands}
+To put the tracked and edited files in a sandbox (i.e., Work in Progress (WIP) commit):
+\begin{verbatim}
+> git stash
+\end{verbatim}
+To create a commit that undoes a previous commit (denoted by the SHA):
+\begin{verbatim}
+> git revert <<SHA>>
+\end{verbatim}
+To delete all changes and move your current branch pointer to the commit denoted by SHA:
+\begin{verbatim}
+> git reset --hard <<SHA>>
+\end{verbatim}
+NB: this is DANGEROUS! Use it with care not out of frustration!!
+
+\subsection{Pushing}
+Well, well, well. Now you've updated your repository, committed some changes and are ready to share those changes with everyone else. Before you do so, update your repository again! Do this just to make sure that in the period between when you last updated your repository and when you want to push your changes, someone else hasn't introduced changes to the repository. Now, after doing another round of \texttt{git fetch} and \texttt{git rebase origin/master}, do:
+\begin{verbatim}
+> git push
+\end{verbatim}
+and your changes will be sent to the global repository, updating the \texttt{origin/HEAD} and \texttt{origin/master} pointers. \smiley
+
+\section{Other Useful Commands....just not used regularly}
+
+\subsection{\texttt{git branch}}
+
+\subsection{\texttt{git rebase -i}}
+
+
+\subsection{\texttt{git merge}}
+
+
+\label{submodule}
+\subsection{\texttt{git submodule}}
+
+
+\subsection{\texttt{git remote}}
+
+
+\subsection{\texttt{git blame}}
+
+
+\subsection{\texttt{git bisect}}
+
+\section{Git Workflow Setup}
+
+\subsection{Everyone can \texttt{push}}
+
+This is the basic setup where all team members can write directly to the repository. This works best for small teams with separate tasks. Basically, everyone clones from the same remote repository, \texttt{origin}. They do their work and push their changes to the repository. Management is minimal and overall project stability is not important; People can break parts of the code and fixing it is not urgent.
+
+\subsection{Gatekeeper}
+
+In this model, there is an assigned gatekeeper, usually a project manager. This person ensures the global coherence of the project. Individual team members have two remotes, \texttt{origin} and a personal one that is a fork of the main repository. They make changes as needed and push to their fork of the main repository. They then create a pull request, asking the gatekeeper to merge their changes into the main repository. The gatekeeper is responsible for ensuring that the changes brought into the repository do not interfere with other parts of the project code. This setup is best for medium-size projects with many moving parts where code stability, even in development, is important.
+
+\end{document}
