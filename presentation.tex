@@ -1,7 +1,11 @@
-\documentclass{article}
+\documentclass[10pt, a4paper]{article}
 \usepackage[a4paper, total={6.5in, 10.5in}]{geometry}
-\usepackage[urlcolor=blue,colorlinks=true]{hyperref}
+\usepackage{hyperref}
+\hypersetup{breaklinks=true,pagecolor=white,colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
 \usepackage{wasysym}
+\usepackage{fancyvrb}
+\DefineVerbatimEnvironment{code}{Verbatim}{fontsize=\small}
+\DefineVerbatimEnvironment{example}{Verbatim}{fontsize=\small}
 \begin{document}
 
 \title{Git Handout\thanks{This handout available at \url{http://www.dynare.org/houtan/handouts}}}
@@ -34,39 +38,39 @@ Before we get tackle the main git workflow, there is a bit of housekeeping you'l
 When setting up git on your computer for the first time, you need to tell git who you are. This will allow \texttt{commit}s you make to be associated with you.
 
 Setup is rather simple. At the command prompt, configure your global git information by issuing the following two commands:
-\begin{verbatim}
+\begin{code}
 > git config --global user.name "Your Name"
 > git config --global user.email you@something.something
-\end{verbatim}
+\end{code}
 That's it! \smiley
 
 \subsection{Once per project}
 When working on a project with others, you'll need to \texttt{clone} the global git repository. This command will copy the git repository from the server to your workstation. The repository is completely self-contained and can be copied from one directory to another and from one computer to another. As mentioned above, it contains the entire development history of the project. To get a copy of the global git repository onto your computer, do the following:
-\begin{verbatim}
+\begin{code}
 > git clone <<repository.git>>
-\end{verbatim}
+\end{code}
 There are several different protocals that you can use to connect to a git repository (e.g., \texttt{http}, \texttt{git}, \texttt{https}, \texttt{ssh}). For example, to clone the Dynare repository, you could do:
-\begin{verbatim}
+\begin{code}
 > git clone https://github.com/DynareTeam/dynare.git
 > git clone git@github.com:DynareTeam/dynare.git
-\end{verbatim}
+\end{code}
 where \texttt{https} is open to everyone and \texttt{ssh} is available to those who have uploaded their public key to their \texttt{github.com} account.\\
 \\
 Of course, if you're working directly on the sevrer where the git repository lies, you can simply do:
-\begin{verbatim}
+\begin{code}
 > git clone /srv/git/repoName.git
-\end{verbatim}
+\end{code}
 where \texttt{/srv/git/repoName.git} is the full filename of the git repository.\\
 \\
 \noindent If the repository makes use of \texttt{submodule}s\footnote{These are just other repositories that your repository depends on, more on this in Section \ref{submodule}}, instead of running
-\begin{verbatim}
+\begin{code}
 > git clone git@github.com:DynareTeam/dynare.git
 > cd dynare && git submodule update --init --recursive
-\end{verbatim}
+\end{code}
 you can save yourself a step by simply running
-\begin{verbatim}
+\begin{code}
 > git clone --recurse-submodules git@github.com:DynareTeam/dynare.git
-\end{verbatim}
+\end{code}
 
 \section{Basic Workflow}
 Ok, you've done it! Now you have a copy of the git repository on your computer. Now what? Well, if you're a developer, you may want to actually edit files in the repository and then share the changes you've made with the rest of the team. As these actions will comprise the majority of your interactions with git, let's start with them.
@@ -86,25 +90,25 @@ Before we can talk about updating your local repository, we should talk about th
 Note here that branch names take the form \texttt{<<remote name>>/<<branch name>>}. Here, our \texttt{remote}\footnote{A \texttt{remote} in git is just a repository. By default/convention the first repository you clone from is called \texttt{origin}. Implicit in that statement is that you can track multiple repositories. In my Dynare development for example, I track the main Dynare repository (\texttt{origin}), \texttt{https://github.com/DynareTeam/dynare.git} and I also track a personal remote that I call \texttt{houtanb}, \texttt{https://github.com/houtanb/dynare.git}. I \texttt{push} changes to \texttt{houtanb} that I want to test on a server. Once I have tested those changes and am satisfied they are correct, I \texttt{push} them to \texttt{origin} so that the other Dynare Team members can see them.} name is \texttt{origin}.\footnote{Also, note that in git parlance, \texttt{origin} is just the name of a \texttt{remote} and hence that name can be changed to whatever you want.}\\
 \\
 The command:
-\begin{verbatim}
+\begin{code}
 > git branch
-\end{verbatim}
+\end{code}
 tells you which branch you're currently on. One great benefit of git is that you can have several branches, both locally and on the server. This is useful for software releases (e.g., at Dynare, in addition to the \texttt{master} branch, we have a branch for every major release), for working on a side project that will eventually be \texttt{merge}ed back into \texttt{master}, as well as just for testing ideas out locally.
 
 \subsubsection{Updating Procedure}
 Now that you understand a bit more about branches in git, we're ready to look at the repository updating procedure that you'll use on a regular basis. Basically, before you start working, you should do the following:
-\begin{verbatim}
+\begin{code}
 > git branch
-\end{verbatim}
+\end{code}
 to ensure you're on the branch you want to be on (for our purposes, we want to be on \texttt{master}). If you're not on \texttt{master}, simply run
-\begin{verbatim}
+\begin{code}
 > git checkout master
-\end{verbatim}
+\end{code}
 to move back to the \texttt{master} branch. Next, to update from the \texttt{remote} repository (in our case, it's called \texttt{origin}, simply do:
-\begin{verbatim}
+\begin{code}
 > git fetch
 > git rebase origin/master
-\end{verbatim}
+\end{code}
 So, what do these commands do? Well,
 \begin{itemize}
   \item \texttt{git fetch} brings in any changes from the global git repository, updating pointers to the global branches (i.e., \texttt{origin/master} and \texttt{origin/HEAD})
@@ -116,19 +120,19 @@ NB: NEVER USE \texttt{git pull}; it's a high-level command (combining \texttt{fe
 
 \subsection{Committing}
 After having made some changes, you are ready to create a commit. A commit is a logical change; it can be as short as one character or as long as you want. The point is that if it were ever to be undone (\texttt{revert}ed) only that logical change should be undone. If there are more than one type of change within a commit, reverting it would undo things that you may want to keep in the repository. What's more, it helps everyone working on the project better understand exactly what was changed without being obliged to look at the code.
-\begin{verbatim}
+\begin{code}
 > git add <<file to be committed>>
 > git commit -m "<<descriptive message>>"
-\end{verbatim}
+\end{code}
 \begin{itemize}
   \item \texttt{git add} adds an edited file to the staging area, preparing it to be commited. NB: if you modify the file after running \texttt{git add}, you will need to add it again in order for those changes to be included in the commit
   \item \texttt{git commit} creates the logical commit on your current branch (\texttt{master} for us), moving it forward by one node, leaving \texttt{origin/master} behind. Your local repository is now ahead of the global repository. NB: A commit is denoted by a unique Secure Hash Algorithm (SHA).
 \end{itemize}
 After a commit, if you realize that you have forgotten to include a file that logically belongs there, don’t worry! Just,
-\begin{verbatim}
+\begin{code}
 > git add <file to be committed>
 > git commit --amend
-\end{verbatim}
+\end{code}
 to include it in the commit.
 
 \subsubsection{Three Types of Files In Git}
@@ -138,9 +142,9 @@ to include it in the commit.
   \item \textbf{Untracked File}: Any file in the repository that is not explicitly ignored by a \texttt{.gitignore} file and has not previously been \texttt{commit}ted and is not currently in the staging area
 \end{itemize}
 Running
-\begin{verbatim}
+\begin{code}
 > git status
-\end{verbatim}
+\end{code}
 will tell you which files are Staged, Unstaged, and Untracked.
 
 \subsubsection{.gitignore}
@@ -148,24 +152,24 @@ This is a file that tells git which untracked files to ignore. Entries might inc
 
 \subsubsection{Related Commands}
 To put the tracked and edited files in a sandbox (i.e., Work in Progress (WIP) commit):
-\begin{verbatim}
+\begin{code}
 > git stash
-\end{verbatim}
+\end{code}
 To create a commit that undoes a previous commit (denoted by the SHA):
-\begin{verbatim}
+\begin{code}
 > git revert <<SHA>>
-\end{verbatim}
+\end{code}
 To delete all changes and move your current branch pointer to the commit denoted by SHA:
-\begin{verbatim}
+\begin{code}
 > git reset --hard <<SHA>>
-\end{verbatim}
+\end{code}
 NB: this is DANGEROUS! Use it with care not out of frustration!!
 
 \subsection{Pushing}
 Well, well, well. Now you've updated your repository, committed some changes and are ready to share those changes with everyone else. Before you do so, update your repository again! Do this just to make sure that in the period between when you last updated your repository and when you want to push your changes, someone else hasn't introduced changes to the repository. Now, after doing another round of \texttt{git fetch} and \texttt{git rebase origin/master}, do:
-\begin{verbatim}
+\begin{code}
 > git push
-\end{verbatim}
+\end{code}
 and your changes will be sent to the global repository, updating the \texttt{origin/HEAD} and \texttt{origin/master} pointers. \smiley
 
 \section{Other Useful Commands....just not used regularly}
@@ -174,6 +178,46 @@ and your changes will be sent to the global repository, updating the \texttt{ori
 
 \subsection{\texttt{git rebase -i}}
 
+Though the idea of git is to maintain the entire development history of a project, we should be wary of overwriting said history. That said, as we are developing we may run into situations where we want to reorder our commits before sharing them with others in the project. This may happen when you are working locally and, for example, you have made two bug fix commits and are about to push them to the shared repository when you notice that your first bug fix commit didn't actually fix the bug. You edit the code, commit it, but now have a tree that looks like this:
+\begin{code}
+o [master] bug fix 1 update - timestamp today 12:01 (SHA sha3)
+o bug fix 2                 - timestamp today 12:00 (SHA sha2)
+o bug fix 1                 - timestamp today 11:59 (SHA sha1)
+o [origin/master] msg       - timestamp whenever    (SHA sha0)
+\end{code}
+This, however, breaks the defining characteristic of a commit: that it reprepsents a \textbf{logical} change to the code because you have two commits that fix bug 1, whereas you should only have one commit that fixes bug 1. Before pushing to the shared repository, we can fix this issue by using an interactive rebase (command: \texttt{git rebase -i <<SHA>>} or \texttt{git rebase -i origin/master}), which will yield a screen akin to:
+\begin{code}
+pick fb65f2d bug fix 1
+pick f7f45c6 bug fix 2
+pick 853c3f0 bug fix 1 update
+
+# Rebase 81d5998..853c3f0 onto 81d5998
+#
+# Commands:
+#  p, pick = use commit
+#  r, reword = use commit, but edit the commit message
+#  e, edit = use commit, but stop for amending
+#  s, squash = use commit, but meld into previous commit
+#  f, fixup = like "squash", but discard this commit's log message
+#  x, exec = run command (the rest of the line) using shell
+#
+# If you remove a line here THAT COMMIT WILL BE LOST.
+# However, if you remove everything, the rebase will be aborted.
+#
+\end{code}
+To modify the commit history you can then reorder lines, delete lines and/or modify the word \texttt{pick} according to the \texttt{Commands} section. To accomplish what we originally wanted in this example, we would change those lines to be:
+\begin{code}
+pick fb65f2d bug fix 1
+f 853c3f0 bug fix 1 update
+pick f7f45c6 bug fix 2
+\end{code}
+This would result in the tree:
+\begin{code}
+o [master] bug fix 2        - timestamp today 12:00 (SHA sha2)
+o bug fix 1                 - timestamp today 11:59 (SHA sha1)
+o [origin/master] msg       - timestamp whenever    (SHA sha0)
+\end{code}
+and now we would be ready to share these commits with the other team members. \smiley
 
 \subsection{\texttt{git merge}}
 
