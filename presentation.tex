@@ -230,6 +230,39 @@ and now we would be ready to share these commits with the other team members. \s
 
 \subsection{\texttt{git merge}}
 
+\texttt{git merge} is a command that combines two or more development histories (branches). You'll need it when deciding to merge some experimental branch back into the main branch. Or, you might need it if you're  responsible for merging developers' commits into the main git repository.
+
+To merge two branches, first checkout the branch you want to merge into, then merge in the other branch:
+\begin{code}
+> git checkout master
+> git merge development
+\end{code}
+
+Easy as that! Just, not really. If it is, breathe a sigh of releif. If it's not, well, you have some more work to do. Git will let you know there's a problem, displaying a message such as:
+\begin{code}
+Auto-merging main.cc
+CONFLICT (add/add): Merge conflict in main.cc
+Automatic merge failed; fix conflicts and then commit the result.
+\end{code}
+\noindent while the file(s) with the conflicts will be marked up like:
+\begin{code}
+<<<<<<< HEAD
+// My first version of main.cc
+=======
+// My second version of main.cc
+>>>>>>> trash1
+\end{code}
+You'll run into this problem when the same line was modified in both branches. In this case, git doesn't know which modification to keep and hence asks you to figure things out. Git helps you out by marking up the file in the location where things diverged, but that's all it can do. The rest is up to you. You have to open the file, go to the section marked up by git, and modify the lines to contain the good version of the code. You can then add and commit it as:
+\begin{code}
+> git add main.cc
+> git commit
+\end{code}
+\noindent git remembers that you are in the middle of a merge and will set the commit message for you, which, of course, you can edit as you please.
+
+If you find yourself in the middle of a merge that you do not want to complete, simply run either \texttt{git merge --abort} or \texttt{git reset --hard [<<SHA>>]}.
+
+Now, note that git has a bunch of what they call ``merge strategies.'' The details of these strategies are not useful for the average small or medium-sized project so they won't be addressed here.
+
 
 \label{submodule}
 \subsection{\texttt{git submodule}}
