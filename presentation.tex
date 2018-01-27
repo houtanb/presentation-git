@@ -31,6 +31,15 @@ Git is a distributed version control system, developed by Linus Torvalds of Linu
 \\
 \noindent Because of the distributed nature of git, you can develop locally (without need for an internet connection) and, when ready, send (\texttt{push}) them to the main git repository (\texttt{origin}) to share them with your team
 
+\section{When is it useful?}
+All the time. \smiley
+
+Really, git is useful when you are working on projects that depend on text files. So, if you're writing STATA do files, Matlab .m files, adding data to a CSV-based spreadsheet, writing a document in \LaTeX, git can help you out.\footnote{Note that you can keep non text-based files in git. The thing is that git keeps track of the textual differences between files to keep the repository size small. If you keep compiled files in git (e.g. \texttt{.pdf}s, \texttt{.exe}, \texttt{.a}, etc. and these files change often, the size of your git repository will explode. That said, there are additional programs that you can use in conjunction with git for storing these types of files such as Git LFS, but I will not cover that in this file.}
+
+Furthermore, git is particularly helpful when working on research projects. Having worked on a research project before the invention of git, at a certain point file organization became frustrating and rather confusing. My coauthor and myself would each work independently on different aspects of the project and then have to merge our work together. Or, we'd run into a problem, copy everything into a new folder to try an experiment to see if we could resolve the problem, then run into another issue and copy everything into yet another folder to try to resolve that problem. When we finally resolved the main problem, we would never delete the other folders we had used for fear of losing something that we could use later, so we ended up with a confusing layout of badly named folders that lost all meaning over the course of the research project. Git solves these problems and more \smiley
+
+In much the same way that git is useful for group-oriented work, it's also useful for working on your own. You can try diffent things on git branches, always having your main work handy. You can make changes, always certain that you can revert to a previous state of a file. Once you are at ease with the git workflow and commands, you'll find yourself using it in many aspects of your work: research, presentations, notes, etc.
+
 \section{Setup}
 Before we get tackle the main git workflow, there is a bit of housekeeping you'll need to do.
 
