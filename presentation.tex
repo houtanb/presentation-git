@@ -40,6 +40,17 @@ Furthermore, git is particularly helpful when working on research projects. Havi
 
 In much the same way that git is useful for group-oriented work, it's also useful for working on your own. You can try diffent things on git branches, always having your main work handy. You can make changes, always certain that you can revert to a previous state of a file. Once you are at ease with the git workflow and commands, you'll find yourself using it in many aspects of your work: research, presentations, notes, etc.
 
+\section{Group Project with Git: Workflow Setup}
+
+\subsection{Everyone can \texttt{push}}
+
+This is the basic setup where all team members can write directly to the repository. This works best for small teams with separate tasks. Basically, everyone clones from the same remote repository, \texttt{origin}. They do their work and push their changes to the repository. Management is minimal and overall project stability is not important; People can break parts of the code and fixing it is not urgent.
+
+\subsection{Gatekeeper}
+
+In this model, there is an assigned gatekeeper, usually a project manager. This person ensures the global coherence of the project. Individual team members have two remotes, \texttt{origin} and a personal one that is a fork of the main repository. They make changes as needed and push to their fork of the main repository. They then create a pull request, asking the gatekeeper to merge their changes into the main repository. The gatekeeper is responsible for ensuring that the changes brought into the repository do not interfere with other parts of the project code. This setup is best for medium-size projects with many moving parts where code stability, even in development, is important.
+
+
 \section{Setup}
 Before we get tackle the main git workflow, there is a bit of housekeeping you'll need to do.
 
@@ -276,14 +287,5 @@ Now, note that git has a bunch of what they call ``merge strategies.'' The detai
 
 \subsection{\texttt{git bisect}}
 
-\section{Group Project with Git: Workflow Setup}
-
-\subsection{Everyone can \texttt{push}}
-
-This is the basic setup where all team members can write directly to the repository. This works best for small teams with separate tasks. Basically, everyone clones from the same remote repository, \texttt{origin}. They do their work and push their changes to the repository. Management is minimal and overall project stability is not important; People can break parts of the code and fixing it is not urgent.
-
-\subsection{Gatekeeper}
-
-In this model, there is an assigned gatekeeper, usually a project manager. This person ensures the global coherence of the project. Individual team members have two remotes, \texttt{origin} and a personal one that is a fork of the main repository. They make changes as needed and push to their fork of the main repository. They then create a pull request, asking the gatekeeper to merge their changes into the main repository. The gatekeeper is responsible for ensuring that the changes brought into the repository do not interfere with other parts of the project code. This setup is best for medium-size projects with many moving parts where code stability, even in development, is important.
 
 \end{document}
