@@ -95,6 +95,16 @@ you can save yourself a step by simply running
 \section{Basic Workflow}
 Ok, you've done it! Now you have a copy of the git repository on your computer. Now what? Well, if you're a developer, you may want to actually edit files in the repository and then share the changes you've made with the rest of the team. As these actions will comprise the majority of your interactions with git, let's start with them.
 
+\subsection{Summary}
+Here's an overview of the general workflow (and the following sections):
+\begin{enumerate}
+  \item Update your repository: \texttt{git fetch \&\& git rebase origin/master}
+  \item Edit file(s)
+  \item Stage file(s) according to \textbf{logical} change: \texttt{git add <<files to add>>}
+  \item Commit file(s) according to \textbf{logical} change: \texttt{git commit -m ``<<message>>''}
+  \item Share changes: \texttt{git push origin master}
+\end{enumerate}
+
 \subsection{Updating your repository}
 
 Now, before you begin editing a file, it's good practice to update your local copy of the repository. This allows you to always work with the latest version of the code and helps you integrate your changes with those already \texttt{push}ed to the main repository. In this way, when you're finally ready to share the changes you've been making, you won't have to worry about \texttt{merge} conflicts.
