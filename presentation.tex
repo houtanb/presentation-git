@@ -52,7 +52,7 @@ In this model, there is an assigned gatekeeper, usually a project manager. This 
 
 
 \section{Setup}
-Before we get tackle the main git workflow, there is a bit of housekeeping you'll need to do.
+Before we tackle the main git workflow, there is a bit of housekeeping you'll need to do.
 
 \subsection{Once per computer}
 When setting up git on your computer for the first time, you need to tell git who you are. This will allow \texttt{commit}s you make to be associated with you.
@@ -301,4 +301,65 @@ More to come here...
 %\subsection{\texttt{git bisect}}
 
 
+\section{Presentation Example}
+
+General Workflow
+
+Setup \texttt{origin}
+\begin{enumerate}
+  \item \texttt{mkdir presentation-origin-repo.git}
+  \item \texttt{cd presentation-origin-repo.git}
+  \item \texttt{git init --bare --shared=group}
+  \item \texttt{git config receive.denynonfastforwards false}
+  \item \texttt{cd ..}
+\end{enumerate}
+
+Clone
+\begin{enumerate}
+  \item \texttt{git clone presentation-origin-repo.git presentation-day}
+  \item \texttt{cd presentation-day}
+  \item \texttt{git commit -m "Initial Commit" --allow-empty}
+\end{enumerate}
+
+General Workflow
+\begin{enumerate}
+  \item \texttt{echo -e ``aaa bbb\\nccc'' > file1.txt}
+  \item \texttt{git add file1.txt}
+  \item \texttt{git commit -m ``my first file''}
+  \item \texttt{git push origin master}
+\end{enumerate}
+
+Branch
+\begin{enumerate}
+  \item \texttt{git checkout -b dev}
+  \item \texttt{echo -e ``aaa ddd\\nccc'' > file1.txt}
+  \item \texttt{git add file1.txt}
+  \item \texttt{git commit -m ``ddd change''}
+  \item \texttt{git push origin dev}
+  \item \texttt{git checkout master}
+  \item \texttt{echo -e ``eee bbb\\nccc'' > file1.txt}
+  \item \texttt{git add file1.txt}
+  \item \texttt{git commit -m ``eee change''}
+  \item \texttt{git push origin master}
+\end{enumerate}
+
+Tag
+\begin{enumerate}
+  \item \texttt{git checkout dev}
+  \item \texttt{git tag come\_back}
+  \item \texttt{git checkout master}
+\end{enumerate}
+
+Merge
+\begin{enumerate}
+  \item \texttt{git merge dev}
+  \item \texttt{git commit}
+  \item \texttt{git push origin master}
+\end{enumerate}
+
+Cherry-pick alternative
+\begin{enumerate}
+  \item \texttt{git reset --hard HEAD~1}
+  \item \texttt{git cherry-pick -x dev}
+\end{enumerate}
 \end{document}
