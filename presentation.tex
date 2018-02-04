@@ -34,22 +34,11 @@ Git is a distributed version control system, developed by Linus Torvalds of Linu
 \section{When is it useful?}
 All the time. \smiley
 
-Really, git is useful when you are working on projects that depend on text files. So, if you're writing STATA do files, Matlab .m files, adding data to a CSV-based spreadsheet, writing a document in \LaTeX, git can help you out.\footnote{Note that you can keep non text-based files in git. The thing is that git keeps track of the textual differences between files to keep the repository size small. If you keep compiled files in git (e.g. \texttt{.pdf}s, \texttt{.exe}, \texttt{.a}, etc. and these files change often, the size of your git repository will explode. That said, there are additional programs that you can use in conjunction with git for storing these types of files such as Git LFS, but I will not cover that in this file.}
+Really, git is useful when you are working on projects that depend on text files. So, if you're writing STATA do files, Matlab .m files, adding data to a CSV-based spreadsheet, writing a document in \LaTeX, git can help you out.\footnote{Note that you can keep non text-based files in git. The thing is that git keeps track of the textual differences between files to keep the repository size small. If you keep compiled files in git (e.g. \texttt{.pdf}s, \texttt{.exe}, \texttt{.a}, etc.) and these files change often, the size of your git repository will explode. That said, there are additional programs that you can use in conjunction with git for storing these types of files such as Git LFS, but I will not cover that in this file.}
 
 Furthermore, git is particularly helpful when working on research projects. Having worked on a research project before the invention of git, at a certain point file organization became frustrating and rather confusing. My coauthor and myself would each work independently on different aspects of the project and then have to merge our work together. Or, we'd run into a problem, copy everything into a new folder to try an experiment to see if we could resolve the problem, then run into another issue and copy everything into yet another folder to try to resolve that problem. When we finally resolved the main problem, we would never delete the other folders we had used for fear of losing something that we could use later, so we ended up with a confusing layout of badly named folders that lost all meaning over the course of the research project. Git solves these problems and more \smiley
 
 In much the same way that git is useful for group-oriented work, it's also useful for working on your own. You can try diffent things on git branches, always having your main work handy. You can make changes, always certain that you can revert to a previous state of a file. Once you are at ease with the git workflow and commands, you'll find yourself using it in many aspects of your work: research, presentations, notes, etc.
-
-\section{Group Project with Git: Workflow Setup}
-
-\subsection{Everyone can \texttt{push}}
-
-This is the basic setup where all team members can write directly to the repository. This works best for small teams with separate tasks. Basically, everyone clones from the same remote repository, \texttt{origin}. They do their work and push their changes to the repository. Management is minimal and overall project stability is not important; People can break parts of the code and fixing it is not urgent.
-
-\subsection{Gatekeeper}
-
-In this model, there is an assigned gatekeeper, usually a project manager. This person ensures the global coherence of the project. Individual team members have two remotes, \texttt{origin} and a personal one that is a fork of the main repository. They make changes as needed and push to their fork of the main repository. They then create a pull request, asking the gatekeeper to merge their changes into the main repository. The gatekeeper is responsible for ensuring that the changes brought into the repository do not interfere with other parts of the project code. This setup is best for medium-size projects with many moving parts where code stability, even in development, is important.
-
 
 \section{Setup}
 Before we tackle the main git workflow, there is a bit of housekeeping you'll need to do.
@@ -208,7 +197,7 @@ and your changes will be sent to the global repository, updating the \texttt{ori
 
 \subsection{\texttt{git rebase -i}}
 
-Though the idea of git is to maintain the entire development history of a project, we should be wary of overwriting said history. That said, as we are developing we may run into situations where we want to reorder our commits before sharing them with others in the project. This may happen when you are working locally and, for example, you have made two bug fix commits and are about to push them to the shared repository when you notice that your first bug fix commit didn't actually fix the bug. You edit the code, commit it, but now have a tree that looks like this:
+Since the idea of git is to maintain the entire development history of a project, we should be wary of overwriting said history. That said, as when developing locally we may run into situations where we want to reorder our commits before sharing them with others in the project. This may happen when, for example, you have made two bug fix commits and are about to push them to the shared repository when you notice that your first bug fix commit didn't actually fix the bug. You edit the code, commit it, but now have a tree that looks like this:
 \begin{code}
 o [master] bug fix 1 update - timestamp today 12:01 (SHA sha3)
 o bug fix 2                 - timestamp today 12:00 (SHA sha2)
@@ -285,8 +274,8 @@ If you find yourself in the middle of a merge that you do not want to complete, 
 Now, note that git has a bunch of what they call ``merge strategies.'' The details of these strategies are not useful for the average small or medium-sized project so they won't be addressed here.
 
 
-\label{submodule}
 \subsection{\texttt{git submodule}}
+\label{submodule}
 
 Sometimes your project will depend on another project's code. You may want to compile their code directly into your executables (if it's C-based project for example) or you may want to distribute their functions alongside your own (if their project is Matlab-based for example). If they use git as well, you can store their project within your own.
 
@@ -300,12 +289,22 @@ More to come here...
 
 %\subsection{\texttt{git bisect}}
 
+\section{Group Project with Git: Workflow Setup}
+
+\subsection{Everyone can \texttt{push}}
+
+This is the basic setup where all team members can write directly to the repository. This works best for small teams with separate tasks. Basically, everyone clones from the same remote repository, \texttt{origin}. They do their work and push their changes to the repository. Management is minimal and overall project stability is not important; people can break parts of the code and fixing it is not urgent.
+
+\subsection{Gatekeeper}
+
+In this model, there is an assigned gatekeeper, usually a project manager. This person ensures the global coherence of the project. Individual team members have two remotes, \texttt{origin} and a personal one that is a fork of the main repository. They make changes as needed and push to their fork of the main repository. They then create a pull request, asking the gatekeeper to merge their changes into the main repository. The gatekeeper is responsible for ensuring that the changes brought into the repository do not interfere with other parts of the project code. This setup is best for medium-size projects with many moving parts where code stability, even in development, is important.
+
 
 \section{Presentation Example}
 
-General Workflow
+{\large \textbf{General Workflow}}
 
-Setup \texttt{origin}
+\noindent \textbf{Setup \texttt{origin}}
 \begin{enumerate}
   \item \texttt{mkdir presentation-origin-repo.git}
   \item \texttt{cd presentation-origin-repo.git}
@@ -314,52 +313,130 @@ Setup \texttt{origin}
   \item \texttt{cd ..}
 \end{enumerate}
 
-Clone
+\noindent \textbf{Clone}
 \begin{enumerate}
-  \item \texttt{git clone presentation-origin-repo.git presentation-day}
-  \item \texttt{cd presentation-day}
-  \item \texttt{git commit -m "Initial Commit" --allow-empty}
+  \item Command line
+    \begin{enumerate}
+      \item \texttt{git clone presentation-origin-repo.git command\_line\_user}
+      \item \texttt{cd command\_line\_user}
+      \item \texttt{git config user.name "Command Line User"}
+      \item \texttt{git config user.email "command@line.user"}
+      \item \texttt{git commit -m "Initial Commit" --allow-empty}
+      \item \texttt{git push origin master}
+    \end{enumerate}
+  \item SmartGit
+    \begin{enumerate}
+      \item Repository $\rightarrow$ Clone...
+      \item Repository $\rightarrow$ Settings; change Name and Email
+    \end{enumerate}
 \end{enumerate}
 
-General Workflow
+\noindent \textbf{General Workflow (without the \texttt{git log} and \texttt{git status})}
 \begin{enumerate}
-  \item \texttt{echo -e ``aaa bbb\\nccc'' > file1.txt}
-  \item \texttt{git add file1.txt}
-  \item \texttt{git commit -m ``my first file''}
-  \item \texttt{git push origin master}
+  \item Command line
+    \begin{enumerate}
+      \item \texttt{git status}
+      \item \texttt{git add DLW\_mastercode.do}
+      \item \texttt{git status}
+      \item \texttt{git commit -m adding "DLW\_mastercode.do"}
+      \item \texttt{git status}
+      \item \texttt{git log}
+      \item \texttt{git push origin master}
+      \item \texttt{git status}
+      \item \texttt{git log}
+    \end{enumerate}
+  \item SmartGit user
+    \begin{enumerate}
+      \item Remote $\rightarrow$ Pull... $\rightarrow$ Rebase
+      \item Right click on file $\rightarrow$ Stage
+      \item Local $\rightarrow$ Commit... $\rightarrow$ ``Adding DLW\_procedure.do''
+      \item Remote $\rightarrow$ Push...
+    \end{enumerate}
 \end{enumerate}
 
-Branch
+\noindent \textbf{Conflict on \texttt{git pull --rebase}}\\
+When you have already made a commit
 \begin{enumerate}
-  \item \texttt{git checkout -b dev}
-  \item \texttt{echo -e ``aaa ddd\\nccc'' > file1.txt}
-  \item \texttt{git add file1.txt}
-  \item \texttt{git commit -m ``ddd change''}
-  \item \texttt{git push origin dev}
-  \item \texttt{git checkout master}
-  \item \texttt{echo -e ``eee bbb\\nccc'' > file1.txt}
-  \item \texttt{git add file1.txt}
-  \item \texttt{git commit -m ``eee change''}
-  \item \texttt{git push origin master}
+  \item Command line
+    \begin{enumerate}
+      \item \texttt{git pull --rebase}
+      \item edit lines 1 \& 2 of DLW\_mastercode.do
+      \item \texttt{git add DLW\_mastercode.do}
+      \item \texttt{git commit -m "this was a logical commit"}
+      \item \texttt{git push origin master}
+    \end{enumerate}
+  \item SmartGit user
+    \begin{enumerate}
+      \item edit lines 1 \& 13 of DLW\_mastercode.do
+      \item Right click on file $\rightarrow$ Stage
+      \item Local $\rightarrow$ Commit... $\rightarrow$ ``this was a logical commit too''
+      \item Remote $\rightarrow$ Push...
+      \item Remote $\rightarrow$ Fetch
+      \item Right click on \texttt{origin/master} $\rightarrow$ Rebase HEAD (master) to...
+    \end{enumerate}
+\end{enumerate}
+When you have staged files
+\begin{enumerate}
+  \item Command line
+    \begin{enumerate}
+      \item \texttt{git reset --hard HEAD$\sim$1}
+      \item edit lines 1 \& 2 of DLW\_mastercode.do
+      \item \texttt{git add DLW\_mastercode.do}
+      \item \texttt{git commit -m "this was a logical commit"}
+      \item \texttt{git push origin master}
+    \end{enumerate}
+  \item SmartGit user
+    \begin{enumerate}
+      \item edit lines 1 \& 13 of DLW\_mastercode.do
+      \item Right click on file $\rightarrow$ Stage
+      \item Remote $\rightarrow$ Pull... $\rightarrow$ Rebase
+      \item Right click on Stash $\rightarrow$ Apply Stash...
+    \end{enumerate}
 \end{enumerate}
 
-Tag
+\noindent \textbf{Branch}
 \begin{enumerate}
-  \item \texttt{git checkout dev}
-  \item \texttt{git tag come\_back}
-  \item \texttt{git checkout master}
+  \item Command line
+    \begin{enumerate}
+      \item \texttt{git fetch}
+      \item \texttt{git rebase origin/master}
+      \item edit lines 1 \& 2 of DLW\_mastercode.do
+      \item \texttt{git add DLW\_mastercode.do}
+      \item \texttt{git commit -m "this was a logical commit on the master branch"}
+      \item \texttt{git push origin master}
+    \end{enumerate}
+  \item SmartGit user
+    \begin{enumerate}
+      \item Branch $\rightarrow$ Add Branch... $\rightarrow$ development $\rightarrow$ Add Branch \& Checkout
+      \item edit lines 1 \& 2 of DLW\_mastercode.do
+      \item Right click on file $\rightarrow$ Stage
+      \item Local $\rightarrow$ Commit... $\rightarrow$ ``a logical change on my development branch''
+      \item Remote $\rightarrow$ Pull... $\rightarrow$ Rebase
+      \item edit lines 4 \& 5 of DLW\_mastercode.do
+      \item Right click on file $\rightarrow$ Stage
+      \item Local $\rightarrow$ Commit... $\rightarrow$ ``one more logical change before merge''
+      \item Right click on \texttt{origin/master} $\rightarrow$ Check out... $\rightarrow$ master
+      \item Click on \texttt{development} $\rightarrow$ Branch $\rightarrow$ Merge...
+    \end{enumerate}
 \end{enumerate}
 
-Merge
+\noindent \textbf{Interactive Rebase}
 \begin{enumerate}
-  \item \texttt{git merge dev}
-  \item \texttt{git commit}
-  \item \texttt{git push origin master}
-\end{enumerate}
-
-Cherry-pick alternative
-\begin{enumerate}
-  \item \texttt{git reset --hard HEAD~1}
-  \item \texttt{git cherry-pick -x dev}
+  \item SmartGit user
+    \begin{enumerate}
+      \item edit line 1 of DLW\_mastercode.do (type ``bug fox 1'' somewhere)
+      \item Right click on file $\rightarrow$ Stage
+      \item Local $\rightarrow$ Commit... $\rightarrow$ ``bug fix 1''
+      \item edit lines 4 of DLW\_mastercode.do (type ``bug fix 2'' somewhere)
+      \item Right click on file $\rightarrow$ Stage
+      \item Local $\rightarrow$ Commit... $\rightarrow$ ``bug fix 2''
+      \item edit lines 1 of DLW\_mastercode.do (change to ``bug fix 1'')
+      \item Right click on file $\rightarrow$ Stage
+      \item Local $\rightarrow$ Commit... $\rightarrow$ ``bug fix 1 update''
+      \item Drag 3rd update on top of 1st update $\rightarrow$ Rebase 1 commit from master to <<SHA>>
+      \item Highlight the two commits, right click $\rightarrow$ Squash Commits...
+      \item Click on ``bug fix 2'' commit and drag on top of this new commit $\rightarrow$ Cherry-pick selected commits to master
+      \item Remote $\rightarrow$ Push...
+    \end{enumerate}
 \end{enumerate}
 \end{document}
