@@ -336,9 +336,9 @@ In this model, there is an assigned gatekeeper, usually a project manager. This 
   \item Command line
     \begin{enumerate}
       \item \texttt{git status}
-      \item \texttt{git add DLW\_mastercode.do}
+      \item \texttt{git add function1.m}
       \item \texttt{git status}
-      \item \texttt{git commit -m adding "DLW\_mastercode.do"}
+      \item \texttt{git commit -m adding "function1.m"}
       \item \texttt{git status}
       \item \texttt{git log}
       \item \texttt{git push origin master}
@@ -349,7 +349,7 @@ In this model, there is an assigned gatekeeper, usually a project manager. This 
     \begin{enumerate}
       \item Remote $\rightarrow$ Pull... $\rightarrow$ Rebase
       \item Right click on file $\rightarrow$ Stage
-      \item Local $\rightarrow$ Commit... $\rightarrow$ ``Adding DLW\_procedure.do''
+      \item Local $\rightarrow$ Commit... $\rightarrow$ ``Adding function2.m''
       \item Remote $\rightarrow$ Push...
     \end{enumerate}
 \end{enumerate}
@@ -360,14 +360,14 @@ When you have already made a commit
   \item Command line
     \begin{enumerate}
       \item \texttt{git pull --rebase}
-      \item edit lines 1 \& 2 of DLW\_mastercode.do
-      \item \texttt{git add DLW\_mastercode.do}
+      \item edit lines 1 \& 2 of function1.m
+      \item \texttt{git add function1.m}
       \item \texttt{git commit -m "this was a logical commit"}
       \item \texttt{git push origin master}
     \end{enumerate}
   \item SmartGit user
     \begin{enumerate}
-      \item edit lines 1 \& 13 of DLW\_mastercode.do
+      \item edit lines 1 \& 13 of function1.m
       \item Right click on file $\rightarrow$ Stage
       \item Local $\rightarrow$ Commit... $\rightarrow$ ``this was a logical commit too''
       \item Remote $\rightarrow$ Push...
@@ -380,14 +380,14 @@ When you have staged files
   \item Command line
     \begin{enumerate}
       \item \texttt{git reset --hard HEAD$\sim$1}
-      \item edit lines 1 \& 2 of DLW\_mastercode.do
-      \item \texttt{git add DLW\_mastercode.do}
+      \item edit lines 1 \& 2 of function1.m
+      \item \texttt{git add function1.m}
       \item \texttt{git commit -m "this was a logical commit"}
       \item \texttt{git push origin master}
     \end{enumerate}
   \item SmartGit user
     \begin{enumerate}
-      \item edit lines 1 \& 13 of DLW\_mastercode.do
+      \item edit lines 1 \& 13 of function1.m
       \item Right click on file $\rightarrow$ Stage
       \item Remote $\rightarrow$ Pull... $\rightarrow$ Rebase
       \item Right click on Stash $\rightarrow$ Apply Stash...
@@ -400,19 +400,19 @@ When you have staged files
     \begin{enumerate}
       \item \texttt{git fetch}
       \item \texttt{git rebase origin/master}
-      \item edit lines 1 \& 2 of DLW\_mastercode.do
-      \item \texttt{git add DLW\_mastercode.do}
+      \item edit lines 1 \& 2 of function1.m
+      \item \texttt{git add function1.m}
       \item \texttt{git commit -m "this was a logical commit on the master branch"}
       \item \texttt{git push origin master}
     \end{enumerate}
   \item SmartGit user
     \begin{enumerate}
       \item Branch $\rightarrow$ Add Branch... $\rightarrow$ development $\rightarrow$ Add Branch \& Checkout
-      \item edit lines 1 \& 2 of DLW\_mastercode.do
+      \item edit lines 1 \& 2 of function1.m
       \item Right click on file $\rightarrow$ Stage
       \item Local $\rightarrow$ Commit... $\rightarrow$ ``a logical change on my development branch''
       \item Remote $\rightarrow$ Pull... $\rightarrow$ Rebase
-      \item edit lines 4 \& 5 of DLW\_mastercode.do
+      \item edit lines 4 \& 5 of function1.m
       \item Right click on file $\rightarrow$ Stage
       \item Local $\rightarrow$ Commit... $\rightarrow$ ``one more logical change before merge''
       \item Right click on \texttt{origin/master} $\rightarrow$ Check out... $\rightarrow$ master
@@ -424,13 +424,13 @@ When you have staged files
 \begin{enumerate}
   \item SmartGit user
     \begin{enumerate}
-      \item edit line 1 of DLW\_mastercode.do (type ``bug fox 1'' somewhere)
+      \item edit line 1 of function1.m (type ``bug fox 1'' somewhere)
       \item Right click on file $\rightarrow$ Stage
       \item Local $\rightarrow$ Commit... $\rightarrow$ ``bug fix 1''
-      \item edit lines 4 of DLW\_mastercode.do (type ``bug fix 2'' somewhere)
+      \item edit lines 4 of function1.m (type ``bug fix 2'' somewhere)
       \item Right click on file $\rightarrow$ Stage
       \item Local $\rightarrow$ Commit... $\rightarrow$ ``bug fix 2''
-      \item edit lines 1 of DLW\_mastercode.do (change to ``bug fix 1'')
+      \item edit lines 1 of function1.m (change to ``bug fix 1'')
       \item Right click on file $\rightarrow$ Stage
       \item Local $\rightarrow$ Commit... $\rightarrow$ ``bug fix 1 update''
       \item Drag 3rd update on top of 1st update $\rightarrow$ Rebase 1 commit from master to <<SHA>>
