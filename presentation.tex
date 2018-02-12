@@ -34,11 +34,35 @@ Git is a distributed version control system, developed by Linus Torvalds of Linu
 \section{When is it useful?}
 All the time. \smiley
 
-Really, git is useful when you are working on projects that depend on text files. So, if you're writing STATA do files, Matlab .m files, adding data to a CSV-based spreadsheet, writing a document in \LaTeX, git can help you out.\footnote{Note that you can keep non text-based files in git. The thing is that git keeps track of the textual differences between files to keep the repository size small. If you keep compiled files in git (e.g. \texttt{.pdf}s, \texttt{.exe}, \texttt{.a}, etc.) and these files change often, the size of your git repository will explode. That said, there are additional programs that you can use in conjunction with git for storing these types of files such as Git LFS, but I will not cover that in this file.}
+Really, git is useful when you are working on projects that depend on text files. So, if you're writing STATA do files, Matlab .m files, adding data to a CSV-based spreadsheet, writing a document in \LaTeX, git can help you out.\footnote{Note that you can keep non text-based files in git. The thing is that git keeps track of the textual differences between files to keep the repository size small. If you keep compiled files in git (e.g. \texttt{.pdf}s, \texttt{.exe}, \texttt{.a}, etc.) and these files change often, the size of your git repository will explode. That said, there are additional programs that you can use in conjunction with git for storing these types of files such as Git LFS, but I will not cover that in this file.}\\
 
-Furthermore, git is particularly helpful when working on research projects. Having worked on a research project before the invention of git, at a certain point file organization became frustrating and rather confusing. My coauthor and myself would each work independently on different aspects of the project and then have to merge our work together. Or, we'd run into a problem, copy everything into a new folder to try an experiment to see if we could resolve the problem, then run into another issue and copy everything into yet another folder to try to resolve that problem. When we finally resolved the main problem, we would never delete the other folders we had used for fear of losing something that we could use later, so we ended up with a confusing layout of badly named folders that lost all meaning over the course of the research project. Git solves these problems and more \smiley
+\noindent\textbf{Organizing Work (aka Development Branches)}
 
-In much the same way that git is useful for group-oriented work, it's also useful for working on your own. You can try diffent things on git branches, always having your main work handy. You can make changes, always certain that you can revert to a previous state of a file. Once you are at ease with the git workflow and commands, you'll find yourself using it in many aspects of your work: research, presentations, notes, etc.
+Git is particularly helpful when working on research projects. Having worked on a research project before the invention of git, at a certain point file organization became frustrating and rather confusing. My coauthor and myself would each work independently on different aspects of the project and then have to merge our work together. Or, we'd run into a problem, copy everything into a new folder to try an experiment to see if we could resolve the problem, then run into another issue and copy everything into yet another folder to try to resolve that problem. When we finally resolved the main problem, we would never delete the other folders we had used for fear of losing something that we could use later, so we ended up with a confusing layout of badly named folders that lost all meaning over the course of the research project. Git solves these problems and more \smiley
+
+In much the same way that git is useful for group-oriented work, it's also useful for working on your own. You can try diffent things on git branches, always having your main work handy. You can make changes, always certain that you can revert to a previous state of a file. Once you are at ease with the git workflow and commands, you'll find yourself using it in many aspects of your work: research, presentations, notes, etc.\\
+
+\noindent\textbf{Backups}
+
+In a comon setup, your local git repository is a clone of a respository that you keep on a server. So, if anything happens to your computer, you will always be able to access your code on the server. What's more, since git is distributed, if anything should happen to the server, you can always recreate an ``origin'' repository from your local one \smiley\\
+
+\noindent\textbf{Finding a Bug is Easy}
+
+Using a git command called \texttt{git bisect}, you can easily track down when a bug was introduced into your code base. Imagine you added a certain functionality a year ago. Today, you realize that it no longer works properly. \texttt{git bisect} allows you to quickly track down the commit that introduced the bug by jumping to the commit half-way between a year ago and today and asking you if the bug exists. If it does, then it jumps to the point halfway between that point and a year ago and asks you again. It thus quickly zeros in on the buggy commit.\\
+
+\noindent\textbf{Share Work}
+
+You can easily share your work with colleagues and other interested parties. When working, all you have to do is provide the colleague with the address of your remotet repository. He or she will be able to see if you update the code and immediately have access to those updates. What's more, when you publish your paper, you'll have a version of your code that reproduces all the results in your paper. All you need to do is make this public to share it with anyone who wants to see it and reproduce the results themselves.\\
+
+\noindent\textbf{Clear Development History}
+
+At certain times, it's nice to see how a project has progressed to its current state. By creating logical commits, you do just this. Every node of the git tree represents a version of your codebase. The power of git lies in allowing you to change back to any previous version in your development history.\\
+
+\noindent\textbf{Work Offline}
+
+Since git is distributed, the entire project history is on your computer. So, you can be totally offline, on a plane, on a train, in a car, and, at the drop of a dime, switch to any previous version of the project's development.\\
+
+\noindent\textbf{And Many more...}
 
 \section{Setup}
 Before we tackle the main git workflow, there is a bit of housekeeping you'll need to do.
